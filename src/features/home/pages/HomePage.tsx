@@ -3,7 +3,7 @@ import {Cpu, MessageCircleQuestion, MessageSquare} from "lucide-react";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import AdminLoginCta from "@/features/home/components/AdminLoginCta";
 import FeatureCard from "@/features/home/components/FeatureCard";
-import {useMeQuery} from "@/features/auth/hooks";
+import {useMeQuery} from "@/features/auth/_hooks/hooks";
 import AdminDashboardCta from "@/features/home/components/AdminDashboardCta";
 
 export default function HomePage() {

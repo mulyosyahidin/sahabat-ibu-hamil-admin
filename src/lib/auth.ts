@@ -1,5 +1,7 @@
 import {redirect} from "react-router";
 import {api} from "@/lib/api";
+import {useMeQuery} from "@/features/auth/_hooks/hooks";
+import {generateGravatarUrlWithFallback} from "@/lib/avatar";
 
 /**
  * Guard untuk cabang /auth (login/forgot).
@@ -13,4 +15,20 @@ export async function requireGuest() {
     }
 
     return null;
+}
+
+export async function requireAuth() {
+    const res = await api.get("/auth/me", {validateStatus: () => true});
+    if (res.status === 401) {
+        return redirect("/auth/login");
+    }
+
+    if (res.status < 200 || res.status >= 300) {
+        throw new Error("Gagal memuat data user");
+    }
+
+    return {
+        user: res.data.data,
+        avatarUrl: generateGravatarUrlWithFallback(res.data.data.user.email, res.data.data.user.name, 44),
+    };
 }
