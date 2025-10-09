@@ -1,11 +1,15 @@
 import {useDocumentTitle} from "@/lib/useDocumentTitle";
-import {Cpu, LogIn, MessageCircleQuestion, MessageSquare, ShieldCheck} from "lucide-react";
+import {Cpu, MessageCircleQuestion, MessageSquare} from "lucide-react";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import AdminLoginCta from "@/features/home/components/AdminLoginCta";
 import FeatureCard from "@/features/home/components/FeatureCard";
+import {useMeQuery} from "@/features/auth/hooks";
+import AdminDashboardCta from "@/features/home/components/AdminDashboardCta";
 
 export default function HomePage() {
     useDocumentTitle('Sahabat Ibu Hamil Admin Portal');
+
+    const {data: me, isLoading} = useMeQuery();
 
     return (
         <>
@@ -19,7 +23,11 @@ export default function HomePage() {
                     </div>
 
                     <div className="flex justify-center">
-                        <AdminLoginCta />
+                        {
+                            !isLoading && (
+                                me ? <AdminDashboardCta /> : <AdminLoginCta />
+                            )
+                        }
                     </div>
 
                     {/* Features Preview */}

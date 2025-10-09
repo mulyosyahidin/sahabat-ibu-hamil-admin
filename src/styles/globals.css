@@ -5,6 +5,32 @@ layer(base);
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+    --primary-50:  #fff1f7;
+    --primary-100: #ffe4f0;
+    --primary-200: #fec7e2;
+    --primary-300: #f99dca;
+    --primary-400: #f06fb1;
+    --primary-500: #e64598; /* primary brand (light) */
+    --primary-600: #d12d84;
+    --primary-700: #a41f67;
+    --primary-800: #7c184f;
+    --primary-900: #5e123d;
+}
+
+[data-theme="dark"] {
+    --primary-50:  #2b0f1f;
+    --primary-100: #3a142a;
+    --primary-200: #4c1937;
+    --primary-300: #641f49;
+    --primary-400: #87265f;
+    --primary-500: #b4307d; /* primary brand (dark) */
+    --primary-600: #d43a95;
+    --primary-700: #ea62b2;
+    --primary-800: #f49fcd;
+    --primary-900: #ffd1e7;
+}
+
 @theme {
     --font-*: initial;
     --font-outfit: Outfit, sans-serif;
@@ -53,6 +79,17 @@ layer(base);
     --color-brand-800: #252dae;
     --color-brand-900: #262e89;
     --color-brand-950: #161950;
+
+    --color-primary-50:  var(--primary-50);
+    --color-primary-100: var(--primary-100);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-primary-400: var(--primary-400);
+    --color-primary-500: var(--primary-500);
+    --color-primary-600: var(--primary-600);
+    --color-primary-700: var(--primary-700);
+    --color-primary-800: var(--primary-800);
+    --color-primary-900: var(--primary-900);
 
     --color-blue-light-25: #f5fbff;
     --color-blue-light-50: #f0f9ff;
