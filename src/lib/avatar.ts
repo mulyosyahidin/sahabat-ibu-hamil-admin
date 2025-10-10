@@ -1,24 +1,14 @@
-import md5 from "blueimp-md5";
-
-function initialsFromName(name?: string): string {
-    if (!name) return "U";
-    const parts = name.trim().split(/\s+/).slice(0, 2);
-    return parts.map(p => p[0]?.toUpperCase() ?? "").join("") || "U";
-}
-
 /**
- * Generate URL Gravatar dengan fallback UI Avatars (berdasarkan inisial).
+ * Generate URL DiceBear Avatar berdasarkan email dengan style pixel-art.
  * @param email  email user
- * @param name   nama user (untuk inisial fallback)
- * @param size   pixel (gravatar 1x; UI Avatars kubuat 2x agar tajam di retina)
+ * @param name   nama user (untuk seed fallback)
+ * @param size   pixel size (default 44px)
  */
-export function generateGravatarUrlWithFallback(
+export function generateDiceBearUrl(
     email: string,
     name?: string,
     size = 44
 ): string {
-    const hash = md5(email.trim().toLowerCase());
-    const fallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(initialsFromName(name))}&size=${size * 2}&background=random&color=fff`;
-
-    return `https://www.gravatar.com/avatar/${hash}?s=${size}&r=g&d=${encodeURIComponent(fallback)}`;
+    const seed = name || email;
+    return `https://api.dicebear.com/7.x/pixel-art/svg?seed=${encodeURIComponent(seed)}&size=${size}&scale=80`;
 }

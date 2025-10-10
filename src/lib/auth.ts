@@ -1,7 +1,6 @@
 import {redirect} from "react-router";
 import {api} from "@/lib/api";
-import {useMeQuery} from "@/features/auth/_hooks/hooks";
-import {generateGravatarUrlWithFallback} from "@/lib/avatar";
+import {generateDiceBearUrl} from "@/lib/avatar";
 
 /**
  * Guard untuk cabang /auth (login/forgot).
@@ -29,6 +28,6 @@ export async function requireAuth() {
 
     return {
         user: res.data.data,
-        avatarUrl: generateGravatarUrlWithFallback(res.data.data.user.email, res.data.data.user.name, 44),
+        avatarUrl: generateDiceBearUrl(res.data.data.user.email, res.data.data.user.name, 44),
     };
 }

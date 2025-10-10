@@ -1,9 +1,9 @@
 import {useDocumentTitle} from "@/lib/useDocumentTitle";
-import {Cpu, MessageCircleQuestion, MessageSquare} from "lucide-react";
+import {MessageCircleQuestion, MessageSquare, Smartphone} from "lucide-react";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import AdminLoginCta from "@/features/home/components/AdminLoginCta";
 import FeatureCard from "@/features/home/components/FeatureCard";
-import {useMeQuery} from "@/features/auth/_hooks/hooks";
+import {useMeQuery} from "@/features/auth/hooks";
 import AdminDashboardCta from "@/features/home/components/AdminDashboardCta";
 
 export default function HomePage() {
@@ -35,8 +35,8 @@ export default function HomePage() {
                         <FeatureCard
                             title="Device Management"
                             description="Kelola device bot WhatsApp yang terhubung"
-                            icon={Cpu}
-                            color="indigo"
+                            icon={Smartphone}
+                            color="purple"
                         />
                         <FeatureCard
                             title="Chat Management"

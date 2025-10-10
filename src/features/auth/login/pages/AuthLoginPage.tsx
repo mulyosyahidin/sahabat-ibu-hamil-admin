@@ -3,7 +3,7 @@ import { useDocumentTitle } from "@/lib/useDocumentTitle";
 import { Form, useActionData, useNavigation, useSearchParams } from "react-router";
 import Label from "@/components/ui/forms/label";
 import Input from "@/components/ui/forms/input";
-import Button from "@/components/ui/button";
+import Button from "@/components/ui/buttons/Button";
 import {EyeClosedIcon, EyeIcon} from "lucide-react";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 

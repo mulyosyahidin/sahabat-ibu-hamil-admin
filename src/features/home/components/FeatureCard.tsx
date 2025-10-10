@@ -7,7 +7,7 @@ type FeatureCardProps = {
     description: string;
     ariaLabel?: string;
     icon: LucideIcon;
-    color?: "indigo" | "blue" | "green" | "pink" | "violet" | "emerald";
+    color?: "indigo" | "blue" | "green" | "pink" | "violet" | "emerald" | "purple";
     className?: string;
 };
 
@@ -42,6 +42,8 @@ export default function FeatureCard({
             "bg-violet-100 dark:bg-violet-900 group-hover:bg-violet-200 dark:group-hover:bg-violet-800",
         emerald:
             "bg-emerald-100 dark:bg-emerald-900 group-hover:bg-emerald-200 dark:group-hover:bg-emerald-800",
+        purple:
+            "bg-purple-100 dark:bg-purple-900 group-hover:bg-purple-200 dark:group-hover:bg-purple-800",
     };
 
     const colorText: Record<string, string> = {
@@ -51,6 +53,7 @@ export default function FeatureCard({
         pink: "text-pink-600 dark:text-pink-300",
         violet: "text-violet-600 dark:text-violet-300",
         emerald: "text-emerald-600 dark:text-emerald-300",
+        purple: "text-purple-600 dark:text-purple-300",
     };
 
     const iconWrap = twMerge(

@@ -10,7 +10,6 @@ export async function LoginAction({request}: { request: Request }) {
 
     const formData = await request.formData();
 
-    // Kirim sebagai JSON
     const res = await api.post<LoginResponse>("/auth/login", {
         email: formData.get("email"),
         password: formData.get("password"),

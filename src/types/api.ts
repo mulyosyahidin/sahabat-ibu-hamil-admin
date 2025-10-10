@@ -1,7 +1,17 @@
+export interface PaginationMeta {
+    page: number;
+    limit: number;
+    totalItems: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+}
+
 export type ApiSuccess<T> = {
     success: true;
     message: string;
     data: T;
+    pagination?: PaginationMeta;
 };
 
 export type ApiError = {
