@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, useRouteError, useNavigate } from "react-router";
+import { isRouteErrorResponse, useRouteError } from "react-router";
 import ServerUnavailablePage from "./ServerUnavailablePage";
 
 function isNetworkErr(err: unknown): boolean {
@@ -12,16 +12,12 @@ function isNetworkErr(err: unknown): boolean {
 
 export default function RootErrorBoundary() {
     const error = useRouteError();
-    const navigate = useNavigate();
 
     if (isNetworkErr(error)) {
         return <ServerUnavailablePage />;
     }
 
     if (isRouteErrorResponse(error)) {
-        const status = error.status;
-        const statusText = error.statusText || "Terjadi kesalahan";
-
         const dataMsg =
             (typeof error.data === "object" && error.data && "message" in error.data)
                 ? (error.data as any).message

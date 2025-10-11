@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
-import { useTheme } from '@/theme/ThemeProvider';
+import { useTheme } from '@/theme/useTheme';
+import { CHART_CONFIG, CHART_COLORS } from '../constants/dashboard.constants';
 
 interface ChartData {
     day: string;
@@ -17,8 +18,8 @@ export default function WeeklyCharts({ data }: WeeklyChartsProps) {
     const isDark = theme === 'dark';
     const [chartOptions, setChartOptions] = useState({});
 
-    const gridColor = isDark ? '#334155' : '#e5e7eb';
-    const axisColor = isDark ? '#9ca3af' : '#9ca3af';
+    const gridColor = isDark ? CHART_COLORS.DARK.GRID : CHART_COLORS.LIGHT.GRID;
+    const axisColor = isDark ? CHART_COLORS.DARK.AXIS : CHART_COLORS.LIGHT.AXIS;
 
     useEffect(() => {
         if (!data || data.length === 0) return;
@@ -38,16 +39,16 @@ export default function WeeklyCharts({ data }: WeeklyChartsProps) {
             },
             stroke: {
                 curve: 'smooth',
-                width: 2,
-                colors: ['#db2777'],
+                width: CHART_CONFIG.STROKE_WIDTH,
+                colors: [CHART_CONFIG.STROKE_COLOR],
             },
             fill: {
                 type: 'gradient',
                 gradient: {
                     shadeIntensity: 1,
-                    opacityFrom: 0.4,
-                    opacityTo: 0.01,
-                    stops: [0, 100],
+                    opacityFrom: CHART_CONFIG.GRADIENT_OPACITY_FROM,
+                    opacityTo: CHART_CONFIG.GRADIENT_OPACITY_TO,
+                    stops: CHART_CONFIG.GRADIENT_STOPS,
                     colorStops: [
                         {
                             offset: 0,
@@ -108,15 +109,15 @@ export default function WeeklyCharts({ data }: WeeklyChartsProps) {
                 },
             },
             markers: {
-                size: 4,
-                strokeWidth: 0,
-                colors: ['#db2777'],
+                size: CHART_CONFIG.MARKER_SIZE,
+                strokeWidth: CHART_CONFIG.MARKER_STROKE_WIDTH,
+                colors: [CHART_CONFIG.MARKER_COLOR],
                 hover: {
                     size: 6,
                 },
             },
         });
-    }, [isDark, data]);
+    }, [isDark, data, axisColor, gridColor]);
 
     if (!data || data.length === 0) {
         return (

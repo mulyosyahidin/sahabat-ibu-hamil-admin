@@ -1,14 +1,6 @@
-import React, {createContext, useCallback, useContext, useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {STORAGE_KEYS} from "@/constants/storage";
-
-export type Theme = "light" | "dark";
-type ThemeContextValue = {
-    theme: Theme;
-    setTheme: (t: Theme) => void;
-    toggleTheme: () => void;
-};
-
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+import { Theme, ThemeContext } from "./ThemeContext";
 
 function applyThemeClass(theme: Theme) {
     const root = document.documentElement;
@@ -39,7 +31,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
         try {
             localStorage.setItem(STORAGE_KEYS.theme, t);
-        } catch {}
+        } catch {
+            console.log("Failed to set theme in localStorage");
+        }
 
         applyThemeClass(t);
     }, []);
@@ -55,12 +49,4 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const value = useMemo(() => ({ theme, setTheme, toggleTheme }), [theme, setTheme, toggleTheme]);
 
     return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
-}
-
-
-export function useTheme() {
-    const ctx = useContext(ThemeContext);
-    if (!ctx) throw new Error("useTheme must be used within <ThemeProvider>");
-
-    return ctx;
 }

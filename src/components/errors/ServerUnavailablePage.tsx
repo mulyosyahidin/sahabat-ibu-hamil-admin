@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router";
-import GridShape from "@/components/shapes/GridShape";
+import { useNavigate} from "react-router";
+import { GridShape } from "@/components/shapes";
 import {RefreshCcw} from "lucide-react";
 
 type Props = {
@@ -34,8 +34,12 @@ export default function ServerUnavailablePage({fallbackMessage}: Props) {
                 />
 
                 <p className="mt-10 mb-6 text-base text-gray-700 dark:text-gray-400 sm:text-lg">
-                    Kami tidak bisa terhubung ke server saat
-                    ini. {online ? "Coba muat ulang." : "Periksa koneksi internet Anda."}
+                    {fallbackMessage ?? (
+                        <>
+                        Kami tidak bisa terhubung ke server saat ini.{' '}
+                        {online ? 'Coba muat ulang.' : 'Periksa koneksi internet Anda.'}
+                        </>
+                    )}
                 </p>
 
                 <button

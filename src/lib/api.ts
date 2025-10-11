@@ -22,7 +22,9 @@ export function setToken(token: string | null) {
     try {
         if (token) localStorage.setItem(STORAGE_KEYS.auth_token, token);
         else localStorage.removeItem(STORAGE_KEYS.auth_token);
-    } catch {}
+    } catch {
+        console.log("Failed to set auth token in localStorage");
+    }
 }
 
 export function clearToken() { setToken(null); }

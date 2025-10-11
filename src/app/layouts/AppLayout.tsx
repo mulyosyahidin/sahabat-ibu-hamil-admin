@@ -1,10 +1,10 @@
 import {Outlet} from "react-router";
-import {useTheme} from "@/theme/ThemeProvider";
-import {SidebarProvider, useSidebar} from "@/features/app/_contexts/SidebarContext";
-import React from "react";
-import AppSidebar from "@/features/app/_components/AppSidebar";
-import Backdrop from "@/features/app/_components/Backdrop";
-import AppHeader from "@/features/app/_components/AppHeader";
+import {useTheme} from "@/theme/useTheme";
+import {SidebarProvider} from "@/app/layouts/contexts/SidebarContext";
+import {useSidebar} from "@/app/layouts/contexts/useSidebar";
+import AppSidebar from "@/app/layouts/components/AppSidebar";
+import Backdrop from "@/app/layouts/components/Backdrop";
+import AppHeader from "@/app/layouts/components/AppHeader";
 
 const LayoutContent= () => {
     const { isExpanded, isHovered, isMobileOpen } = useSidebar();

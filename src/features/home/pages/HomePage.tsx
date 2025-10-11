@@ -1,9 +1,9 @@
 import {useDocumentTitle} from "@/lib/useDocumentTitle";
 import {MessageCircleQuestion, MessageSquare, Smartphone} from "lucide-react";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
+import { ThemeSwitcher } from "@/components/common";
 import AdminLoginCta from "@/features/home/components/AdminLoginCta";
 import FeatureCard from "@/features/home/components/FeatureCard";
-import {useMeQuery} from "@/features/auth/hooks";
+import {useMeQuery} from "@/features/auth/hooks/useAuth";
 import AdminDashboardCta from "@/features/home/components/AdminDashboardCta";
 
 export default function HomePage() {

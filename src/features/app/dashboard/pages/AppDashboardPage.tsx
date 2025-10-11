@@ -1,9 +1,8 @@
-import StatCard from "@/features/app/dashboard/components/StatCard";
-import {MessageCircleQuestion, MessageSquare, Smartphone, Stethoscope} from "lucide-react";
-import WeeklyCharts from "@/features/app/dashboard/components/WeeklyChart";
-import {useDashboardOverview} from "@/features/app/dashboard/loaders/overview.query";
-import LoadingState from "@/components/ui/states/LoadingState";
-import ErrorLoadingState from "@/components/ui/states/ErrorLoadingState";
+import { StatCard, WeeklyChart } from "@/features/app/dashboard/components";
+import { MessageCircle, MessageCircleQuestion, Smartphone } from "lucide-react";
+import { useDashboardOverview } from "@/features/app/dashboard/queries";
+import { LoadingState, ErrorLoadingState } from "@/components/ui";
+import { STAT_CARD_COLORS } from "../constants/dashboard.constants";
 
 export default function AppDashboardPage() {
     const { data, isLoading, error } = useDashboardOverview();
@@ -21,19 +20,19 @@ export default function AppDashboardPage() {
                         icon={Smartphone}
                         label="Device"
                         count={data.deviceCount}
-                        color="bg-pink-500"
+                        color={STAT_CARD_COLORS.PRIMARY}
                     />
                     <StatCard
-                        icon={MessageSquare}
+                        icon={MessageCircle}
                         label="Chat"
                         count={data.chatCount}
-                        color="bg-pink-500"
+                        color={STAT_CARD_COLORS.PRIMARY}
                     />
                     <StatCard
                         icon={MessageCircleQuestion}
                         label="Konsultasi"
                         count={data.consultationCount}
-                        color="bg-pink-500"
+                        color={STAT_CARD_COLORS.PRIMARY}
                     />
                 </div>
 
@@ -41,7 +40,7 @@ export default function AppDashboardPage() {
                     <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Jumlah Chat Per Hari (7
                         Hari Terakhir)</h2>
 
-                    <WeeklyCharts data={data.chatCountPerDay} />
+                    <WeeklyChart data={data.chatCountPerDay} />
                 </div>
             </div>
         </div>

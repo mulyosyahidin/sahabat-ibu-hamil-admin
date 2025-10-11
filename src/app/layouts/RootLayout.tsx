@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { meQueryOptions } from "@/features/auth/me.query";
-import BlockingOverlay from "@/components/ui/BlockingOverlay";
+import { meQueryOptions } from "@/features/auth/queries/me.query";
+import { BlockingOverlay } from "@/components/ui";
 import { isNetworkError } from "@/utils/net";
 
 export default function RootLayout() {
-    const { data: me, isLoading, isError, error } = useQuery(meQueryOptions());
+    const { isLoading, isError, error } = useQuery(meQueryOptions());
 
     if (isLoading) {
         return <BlockingOverlay open message="Menghubungkan..." subMessage="Mohon menunggu, sedang menghubungkan aplikasi ke server" />;
