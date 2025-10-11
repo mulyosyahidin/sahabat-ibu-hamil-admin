@@ -2,7 +2,7 @@ import {getRes} from "@/lib/api";
 import {useQuery, type UseQueryOptions} from "@tanstack/react-query";
 import type {ApiError, ApiSuccess} from "@/types/api";
 import {ChatData} from "@/features/app/chats/types/chat.types";
-import {chatKeys} from "@/features/app/chats/queries/queryKeys";
+import {chatKeys} from "@/features/app/chats";
 
 export type ChatByIdPayload = ChatData;
 export type ChatByIdResponse = ApiSuccess<ChatByIdPayload> | ApiError;

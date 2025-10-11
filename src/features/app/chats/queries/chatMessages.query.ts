@@ -1,5 +1,5 @@
 import {ChatMessage} from "@/features/app/chats/types/chat.types";
-import {chatMessageKeys} from "@/features/app/chats/queries/queryKeys";
+import {chatMessageKeys} from "@/features/app/chats/constants/queryKeys";
 import {getRes} from "@/lib/api";
 import {useInfiniteQuery, UseInfiniteQueryOptions} from "@tanstack/react-query";
 

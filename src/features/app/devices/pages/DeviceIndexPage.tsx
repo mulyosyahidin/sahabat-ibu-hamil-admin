@@ -21,7 +21,7 @@ export default function DeviceIndexPage() {
 
     const {data, isLoading, error} = useDevicesQuery({page, limit, q});
 
-     const delFetcher = useFetcher<{ success?: boolean; message?: string }>(
+    const delFetcher = useFetcher<{ success?: boolean; message?: string }>(
         {key: "delete-device"}
     );
 

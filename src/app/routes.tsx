@@ -25,6 +25,11 @@ import {loadDashboardOverviewData} from "@/features/app/dashboard/loaders/dashbo
 import ChatIndexPage from "@/features/app/chats/pages/ChatIndexPage";
 import ChatShowPage from "@/features/app/chats/pages/ChatShowPage";
 import { loadDevices } from "@/features/app/devices";
+import ConsultationIndexPage from "@/features/app/consultations/pages/ConsultationIndexPage";
+import ConsultationShowPage from "@/features/app/consultations/pages/ConsultationShowPage";
+import ConsultationAnswerPage from "@/features/app/consultations/pages/ConsultationAnswerPage";
+import {markConsultationAsViewedAction} from "@/features/app/consultations/actions/markConsulationAsViewedAction";
+import {answerConsultationAction} from "@/features/app/consultations/actions/answerConsultationAction";
 
 export const router = createBrowserRouter([
     {
@@ -68,6 +73,15 @@ export const router = createBrowserRouter([
                             { path: "", Component: ChatIndexPage },
                             { path: ":chatId", Component: ChatShowPage },
                         ]
+                    },
+                    {
+                        path: "consultations",
+                        children: [
+                            { path: "", Component: ConsultationIndexPage },
+                            { path: ":consultationId", Component: ConsultationShowPage },
+                            { path: ":consultationId/answer", Component: ConsultationAnswerPage, action: answerConsultationAction },
+                            { path: ":consultationId/mark-as-viewed", action: markConsultationAsViewedAction },
+                        ],
                     }
                 ],
             }

@@ -2,7 +2,7 @@ import {
     ChevronDownIcon,
     FlipHorizontal,
     LayoutDashboardIcon,
-    MessageCircle,
+    MessageCircle, MessageCircleQuestion,
     SmartphoneIcon
 } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -33,6 +33,11 @@ const menuItems: NavItem[] = [
         name: "Chats",
         path: "/app/chats",
     },
+    {
+        icon: <MessageCircleQuestion className="size-6" />,
+        name: "Konsultasi",
+        path: "/app/consultations",
+    }
 ];
 
 const AppSidebar: React.FC = () => {
