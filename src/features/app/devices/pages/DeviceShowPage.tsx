@@ -27,7 +27,7 @@ export default function DeviceShowPage() {
         const ok = await Swal.fire({
             icon: "warning",
             title: "Apakah Anda yakin?",
-            text: "Tindakan ini tidak dapat dibatalkan!",
+            text: "Setelah dihapus, bot tidak dapat menerima dan mengirim pesan. Anda juga tidak bisa menghubungkan kembali perangkat ini.",
             showCancelButton: true,
             confirmButtonText: "Ya, hapus",
             cancelButtonText: "Batal",

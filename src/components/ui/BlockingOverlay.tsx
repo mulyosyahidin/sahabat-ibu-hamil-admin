@@ -36,18 +36,17 @@ export default function BlockingOverlay({
             role="status"
             aria-live="polite"
             className={clsx(
-                "fixed inset-0",
-                "flex items-center justify-center",
+                "fixed inset-0 flex items-center justify-center",
                 "backdrop-blur-sm",
                 "bg-black/30 dark:bg-black/50",
                 zIndexClassName
             )}
         >
-            {/* Klik tidak menembus ke belakang */}
+            {/* Panel blok klik belakang */}
             <div
                 className={clsx(
                     "pointer-events-auto",
-                    "mx-4 max-w-md w-full",
+                    "mx-4 w-full max-w-md",
                     "rounded-2xl",
                     "bg-white/90 dark:bg-neutral-900/90",
                     "shadow-2xl ring-1 ring-black/5 dark:ring-white/10",
@@ -56,23 +55,26 @@ export default function BlockingOverlay({
                     className
                 )}
             >
-                {/* Spinner */}
+                {/* Spinner pakai currentColor + warna berbeda di dark */}
                 <svg
-                    className="h-8 w-8 animate-spin"
+                    className="h-8 w-8 animate-spin text-pink-600 dark:text-pink-400 motion-reduce:animate-none"
                     viewBox="0 0 24 24"
                     fill="none"
                     aria-hidden="true"
+                    aria-label="Memuat"
+                    role="img"
                 >
+                    {/* track */}
                     <circle
-                        className="opacity-25"
                         cx="12"
                         cy="12"
                         r="10"
+                        className="opacity-20"
                         stroke="currentColor"
                         strokeWidth="4"
                     />
+                    {/* arc */}
                     <path
-                        className="opacity-75"
                         d="M4 12a8 8 0 018-8"
                         stroke="currentColor"
                         strokeWidth="4"
@@ -96,6 +98,5 @@ export default function BlockingOverlay({
         </div>
     );
 
-    // Pakai portal supaya selalu di atas semuanya
     return createPortal(content, document.body);
 }

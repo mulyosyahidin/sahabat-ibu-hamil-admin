@@ -1,11 +1,12 @@
 import {Link, useFetcher, useParams} from "react-router";
 import {useDeviceQuery} from "@/features/app/devices/queries/device.query";
 import {useDocumentTitle} from "@/lib/useDocumentTitle";
-import { ErrorLoadingState, EmptyContentState, Breadcrumb, BackButton } from "@/components/ui";
-import {useEffect, useRef, useState} from "react";
+import {BackButton, Breadcrumb, EmptyContentState, ErrorLoadingState} from "@/components/ui";
+import {useEffect, useMemo, useRef, useState} from "react";
 import {io, Socket} from "socket.io-client";
 import {DeviceStatus} from "@/features/app/devices/types/device.types";
 import QRCode from 'qrcode';
+import {RefreshCw} from "lucide-react";
 
 const socketBaseUrl = import.meta.env.VITE_SOCKET_URL as string | undefined;
 
@@ -16,7 +17,14 @@ export default function DeviceConnectPage() {
     useDocumentTitle(device?.name ?? "Detail Perangkat");
 
     const requestFetcher = useFetcher<{ ok?: boolean; message?: string }>();
+    const { submit } = requestFetcher;
+    const stableOptions = useMemo(() => ({
+        transports: ['websocket'],
+    }), []);
     const socketRef = useRef<Socket | null>(null);
+
+    const didInitRef = useRef(false);
+    const didRequestConnectRef = useRef(false);
 
     const [whatsappConnectionStatus, setWhatsappConnectionStatus] = useState<'connecting' | 'requested' | 'scanning' | 'closed' | 'connected' | 'scan-success' | 'disconnected'>('connecting');
     const [whatsappConnectionMessage, setWhatsappConnectionMessage] = useState<string>('');
@@ -27,116 +35,104 @@ export default function DeviceConnectPage() {
     useEffect(() => {
         if (!device) return;
 
-        if (device.status == DeviceStatus.Connected) {
-            setWhatsappConnectionStatus('connected');
-
-            return;
+        if (device.status === DeviceStatus.Connected) {
+            setTimeout(() => {
+                setWhatsappConnectionStatus('connected');
+            }, 2000)
         }
 
-        console.log('Initializing socket connection to', socketBaseUrl);
+        if (didInitRef.current) return;
+        didInitRef.current = true;
 
         const deviceCode = device.code;
+        const socket = io(socketBaseUrl);
+        socketRef.current = socket;
 
-        try {
-            const socket = io(socketBaseUrl, {
-                transports: ["websocket"],
-            });
+        socket.on('connect', () => {
+            console.log('Socket connected, joining device room:', deviceCode);
 
-            socketRef.current = socket;
+            socket.emit('join-device-room', { deviceCode });
+        });
 
-            socketRef.current.on('connect', () => {
-                console.log('Socket connected');
+        socket.on('device-room-joined', () => {
+            console.log('Joined device room, requesting connection for device:', deviceCode);
 
-                socketRef.current?.emit('join-device-room', {
-                    deviceCode
+            if (!didRequestConnectRef.current && device.status !== DeviceStatus.Connected) {
+                didRequestConnectRef.current = true;
+                
+                submit(null, {
+                    method: 'post',
+                    action: `/app/devices/${device.code}/connect/request`,
                 });
-            });
+            }
+        });
 
-            socketRef.current.on('device-room-joined', async () => {
-                console.log('Joined to room');
+        socket.on('connection-requested', (data) => {
+            console.log('Connection requested:', data);
 
-                if (device.status != DeviceStatus.Connected) {
-                    requestFetcher.submit(null, {
-                        method: "post",
-                        action: `/app/devices/${device.code}/connect/request`,
-                    });
-                }
-            });
+            setWhatsappConnectionStatus('requested');
+            setWhatsappConnectionMessage(data.message);
+        });
 
-            socketRef.current.on('connection-requested', (data: {
-                deviceCode: string,
-                status: string,
-                message: string,
-                timestamp: string
-            }) => {
-                console.log('Connection requested');
+        socket.on('qr-updated', (data: { deviceCode: string; qr: string }) => {
+            console.log('QR code updated:', data);
 
-                setWhatsappConnectionStatus('requested');
-                setWhatsappConnectionMessage(data.message);
-            });
-
-            socketRef.current.on('qr-updated', (data: { deviceCode: string, qr: string, timestamp: string }) => {
-                console.log('QR Code received');
-
-                QRCode.toDataURL(data.qr, {
-                    width: 256,
-                    margin: 2,
-                    color: {
-                        dark: '#000000',
-                        light: '#FFFFFF'
-                    }
+            QRCode.toDataURL(data.qr, { width: 256, margin: 2, color: { dark: '#000000', light: '#FFFFFF' } })
+                .then((url) => {
+                    setQrCodeImage(url);
+                    setWhatsappConnectionStatus('scanning');
                 })
-                    .then((url: string) => {
-                        setQrCodeImage(url);
-                        setWhatsappConnectionStatus('scanning');
-                    })
-                    .catch((err: Error) => {
-                        console.error('Error generating QR code:', err);
-                    });
-            });
+                .catch((err) => console.error('Error generating QR code:', err));
+        });
 
-            socketRef.current.on('device-connected', (data: {
-                deviceCode: string,
-                message: string,
-                timestamp: string,
-                user: { id: string, name: string, phone: string }
-            }) => {
-                setWhatsappConnectionStatus('connected');
+        socket.on('device-connected', (data) => {
+            console.log('Device connected:', data);
+
+            setWhatsappConnectionStatus('connected');
+            setWhatsappConnectionMessage(data.message);
+            setUserInfo(data.user);
+        });
+
+        socket.on('device-disconnected', (data) => {
+            console.log('Device disconnected:', data);
+
+            setWhatsappConnectionStatus('disconnected');
+            setWhatsappConnectionMessage(data.message);
+        });
+
+        socket.on('connection-status', (data) => {
+            console.log('Connection status update:', data);
+
+            if (data.status === 'time-out' || data.status === 'connection-lost') {
+                setWhatsappConnectionStatus('closed');
                 setWhatsappConnectionMessage(data.message);
-                setUserInfo(data.user);
-            });
-
-            socketRef.current.on('device-disconnected', (data: {
-                deviceCode: string,
-                message: string,
-                reason: string,
-                timestamp: string,
-                user: { id: string, name: string, phone: string }
-            }) => {
-                setWhatsappConnectionStatus('disconnected');
+            } else if (data.status === 'scan-success') {
+                setWhatsappConnectionStatus('scan-success');
                 setWhatsappConnectionMessage(data.message);
+            }
+        });
+
+        return () => {
+            didInitRef.current = false;
+            socket.removeAllListeners();
+            socket.disconnect();
+            socketRef.current = null;
+        };
+    }, [
+        device?.code,
+        device?.status,
+        submit,
+        stableOptions,
+    ]);
+
+    const handleReconnectRequest = () => {
+        if (device) {
+            submit(null, {
+                method: 'post',
+                action: `/app/devices/${device.code}/connect/request`,
             });
-
-            socketRef.current.on('connection-status', (data: { deviceCode: string, status: string, message: string, timestamp: string }) => {
-                console.log('connection-status', data);
-
-                if (data.status === 'time-out' || data.status == 'connection-lost') {
-                    setWhatsappConnectionStatus('closed');
-                    setWhatsappConnectionMessage(data.message);
-
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 5000);
-                }
-                else if (data.status === 'scan-success') {
-                    setWhatsappConnectionStatus('scan-success');
-                    setWhatsappConnectionMessage(data.message);
-                }
-            });
-        } catch (error) {
-            console.error('Socket initialization error:', error);
         }
-    }, [device, requestFetcher]);
+    }
 
     if (isLoading) return <EmptyContentState/>;
     if (!device || error) return <ErrorLoadingState/>;
@@ -261,6 +257,24 @@ export default function DeviceConnectPage() {
                                        <p className="text-gray-600 dark:text-gray-400">
                                            {whatsappConnectionMessage}
                                        </p>
+
+                                       <button
+                                           type="button"
+                                           onClick={handleReconnectRequest}
+                                           disabled={isLoading}
+                                           className={[
+                                               "inline-flex items-center px-4 py-2 rounded-lg transition-colors",
+                                               "text-pink-700 dark:text-pink-400 bg-pink-50 dark:bg-pink-900/20",
+                                               "hover:bg-pink-100 dark:hover:bg-pink-900/30",
+                                               "disabled:opacity-50 disabled:cursor-not-allowed",
+                                           ].join(" ")}
+                                           aria-label="Coba lagi menghubungkan WhatsApp"
+                                       >
+                                          <RefreshCw className="size-5 mr-2" />
+
+                                           {isLoading ? "Memulai koneksi baru..." : "Coba lagi"}
+                                       </button>
+
                                    </div>
                                </div>
                            )}
@@ -324,7 +338,7 @@ export default function DeviceConnectPage() {
                                            </svg>
                                        </div>
                                        <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                                           Sedang Menghubungkan...
+                                           Menghubungkan...
                                        </h3>
                                        <p className="text-gray-600 dark:text-gray-400">
                                            {whatsappConnectionMessage}

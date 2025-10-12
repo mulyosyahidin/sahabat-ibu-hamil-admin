@@ -161,6 +161,7 @@ export async function postRes<T = unknown, B = unknown>(
         ...cfg,
     });
 }
+
 export async function getRes<T = unknown>(
     url: string,
     cfg?: AxiosRequestConfig & { signal?: AbortSignal }

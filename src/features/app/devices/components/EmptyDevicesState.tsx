@@ -18,7 +18,7 @@ export default function EmptyDevicesState() {
             </p>
             <Link
                 to="/app/devices/create"
-                className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                className="inline-flex items-center px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white font-medium rounded-lg transition-colors"
             >
                 <Plus className="w-4 h-4 mr-2" />
                 Tambah Perangkat

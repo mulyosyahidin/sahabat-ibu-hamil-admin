@@ -26,7 +26,7 @@ export default function RootErrorBoundary() {
         return <ServerUnavailablePage fallbackMessage={dataMsg} />
     }
 
-    const msg = (error as any)?.message ?? "Terjadi kesalahan tak terduga.";
+    const msg = (error as any)?.message ?? "Unknown Error";
 
     return <ServerUnavailablePage fallbackMessage={msg} />;
 }
