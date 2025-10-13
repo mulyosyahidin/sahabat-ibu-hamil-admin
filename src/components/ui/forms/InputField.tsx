@@ -9,7 +9,7 @@ type BaseInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> 
     hint?: string;
 };
 
-const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(function Input(
+const InputField = React.forwardRef<HTMLInputElement, BaseInputProps>(function Input(
     {
         type = "text",
         className = "",
@@ -64,4 +64,4 @@ const Input = React.forwardRef<HTMLInputElement, BaseInputProps>(function Input(
     );
 });
 
-export default Input;
+export default InputField;

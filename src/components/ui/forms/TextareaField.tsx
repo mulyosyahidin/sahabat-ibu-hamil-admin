@@ -9,7 +9,7 @@ type BaseTextareaProps = Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>,
     hint?: string;
 };
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, BaseTextareaProps>(function Textarea(
+const TextareaField = React.forwardRef<HTMLTextAreaElement, BaseTextareaProps>(function Textarea(
     {
         className = "",
         disabled = false,
@@ -65,4 +65,4 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, BaseTextareaProps>(functi
     );
 });
 
-export default Textarea;
+export default TextareaField;

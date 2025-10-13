@@ -8,7 +8,7 @@ interface LabelProps {
     className?: string;
 }
 
-const Label: FC<LabelProps> = ({ htmlFor, children, className }) => {
+const LabelField: FC<LabelProps> = ({ htmlFor, children, className }) => {
     return (
         <label
             htmlFor={htmlFor}
@@ -24,4 +24,4 @@ const Label: FC<LabelProps> = ({ htmlFor, children, className }) => {
     );
 };
 
-export default Label;
+export default LabelField;
