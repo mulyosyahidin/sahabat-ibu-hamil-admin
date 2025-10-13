@@ -2,9 +2,9 @@ import {useDocumentTitle} from "@/lib/useDocumentTitle";
 import {createSearchParams, Link, useNavigate, useSearchParams} from "react-router";
 import {ConsultationStatusBadge, useConsultationsQuery} from "@/features/app/consultations";
 import {ErrorLoadingState, IndexSkeleton, PageHeader, Pagination} from "@/components";
-import {EmptyDevicesState} from "@/features/app/devices";
 import {Eye} from "lucide-react";
 import {formatDate} from "@/utils/utils";
+import EmptyConsultationsState from "@/features/app/consultations/components/EmptyConsultationsState";
 
 export default function ConsultationIndexPage() {
     useDocumentTitle("Konsultasi User");
@@ -28,11 +28,11 @@ export default function ConsultationIndexPage() {
         <div className="p-6">
             {/* Header */}
             <PageHeader title="Konsultasi User"
-                        description="Lihat dan balas konsultasi yang diajukan user melalui consultation bot"/>
+                        description="Lihat dan balas konsultasi yang diajukan user melalui chat bot"/>
 
             {/* Content */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
-                {consultations.length == 0 && <EmptyDevicesState/>}
+                {consultations.length == 0 && <EmptyConsultationsState/>}
 
                 {consultations.length > 0 && (
                     <div
