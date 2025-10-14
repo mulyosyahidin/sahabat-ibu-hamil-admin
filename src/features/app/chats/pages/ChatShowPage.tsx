@@ -131,46 +131,52 @@ export default function ChatShowPage() {
         <div className="p-6 h-screen flex flex-col">
             {/* Header */}
             <div className="mb-6">
-                <div className="flex items-center justify-between">
-                    <Breadcrumb
-                        items={[
-                            {label: "App", href: "/app/dashboard"},
-                            {label: "Chats", href: "/app/chats"},
-                            {label: chat.name},
-                        ]}
-                    />
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="min-w-0">
+                        <Breadcrumb
+                            scrollOnMobile
+                            className="block truncate"
+                            items={[
+                                { label: "App", href: "/app/dashboard" },
+                                { label: "Chats", href: "/app/chats" },
+                                { label: chat.name ?? "Detail" },
+                            ]}
+                        />
+                    </div>
 
-                    <BackButton to="/app/chats"/>
+                    <BackButton to="/app/chats" className="shrink-0 self-start sm:self-auto" />
                 </div>
 
-                <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                <h1 className="mt-3 text-2xl font-semibold text-gray-900 dark:text-white">
                     User Chat
                 </h1>
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 flex space-x-6 min-h-0">
-                <div className="w-3/4 bg-white dark:bg-gray-800 rounded-lg shadow flex flex-col">
-                   <MessagesBox
-                       messages={messages}
-                       messagesCount={chatData.stats.message_count}
-                       messagesLoading={isFetchingNextPage || isDelayingOlder}
-                       hasMoreMessages={hasNextPage}
-                       messagesError={messagesError as Error | null}
-                       loadMessages={fetchNextPage}
-                       messagesContainerRef={messagesContainerRef}
-                       handleScroll={handleScroll}
-                       messageService={messageService} />
-                </div>
-
-                <div className="w-1/4 bg-white dark:bg-gray-800 rounded-lg shadow">
-                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                        <h2 className="text-lg font-medium text-gray-900 dark:text-white">
-                            Detail Chat
-                        </h2>
+            <div className="flex-1 min-h-0">
+                <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_22rem] gap-4 md:gap-6">
+                    {/* Kiri */}
+                    <div className="min-w-0 bg-white dark:bg-gray-800 rounded-lg shadow flex flex-col">
+                        <MessagesBox
+                            messages={messages}
+                            messagesCount={chatData.stats.message_count}
+                            messagesLoading={isFetchingNextPage || isDelayingOlder}
+                            hasMoreMessages={hasNextPage}
+                            messagesError={messagesError as Error | null}
+                            loadMessages={fetchNextPage}
+                            messagesContainerRef={messagesContainerRef}
+                            handleScroll={handleScroll}
+                            messageService={messageService}
+                        />
                     </div>
 
-                   <ChatDetailAccordion chatData={chatData} />
+                    {/* Kanan */}
+                    <aside className="bg-white dark:bg-gray-800 rounded-lg shadow md:sticky md:top-4 h-max">
+                        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                            <h2 className="text-lg font-medium text-gray-900 dark:text-white">Detail Chat</h2>
+                        </div>
+                        <ChatDetailAccordion chatData={chatData} />
+                    </aside>
                 </div>
             </div>
         </div>

@@ -1,6 +1,14 @@
 import {Link, useFetcher, useParams} from "react-router";
 import {useDeviceQuery} from "@/features/app/devices/queries/device.query";
-import { LoadingState, Breadcrumb, ErrorLoadingState, BackButton, EditButton, DeleteButton, BlockingOverlay } from "@/components/ui";
+import {
+    LoadingState,
+    Breadcrumb,
+    ErrorLoadingState,
+    BackButton,
+    EditButton,
+    DeleteButton,
+    BlockingOverlay
+} from "@/components/ui";
 import {getStatusBadge} from "@/utils/ui";
 import {formatDate} from "@/utils/utils";
 import {useDocumentTitle} from "@/lib/useDocumentTitle";
@@ -10,17 +18,17 @@ import {DeviceStatus} from "@/features/app/devices/types/device.types";
 import {Link2Off, LinkIcon} from "lucide-react";
 
 export default function DeviceShowPage() {
-    const { deviceId } = useParams();
+    const {deviceId} = useParams();
 
     // hapus
-    const delFetcher = useFetcher<{ success?: boolean; message?: string }>({ key: "delete-device" });
-    const disconnectFetcher = useFetcher<{ success?: boolean; message?: string }>({ key: "disconnect-device" });
+    const delFetcher = useFetcher<{ success?: boolean; message?: string }>({key: "delete-device"});
+    const disconnectFetcher = useFetcher<{ success?: boolean; message?: string }>({key: "disconnect-device"});
 
     const deleting = delFetcher.state !== "idle";
     const disconnecting = disconnectFetcher.state !== "idle";
     const blocking = deleting || disconnecting;
 
-    const { data: device, isLoading, error } = useDeviceQuery(deviceId!);
+    const {data: device, isLoading, error} = useDeviceQuery(deviceId!);
     useDocumentTitle(device?.name ?? "Detail Perangkat");
 
     const requestDelete = useCallback(async (id: number) => {
@@ -32,7 +40,7 @@ export default function DeviceShowPage() {
             confirmButtonText: "Ya, hapus",
             cancelButtonText: "Batal",
             reverseButtons: true,
-            customClass: { container: "z-[9999]" },
+            customClass: {container: "z-[9999]"},
         }).then(r => r.isConfirmed);
 
         if (!ok) return;
@@ -52,7 +60,7 @@ export default function DeviceShowPage() {
             confirmButtonText: "Ya",
             cancelButtonText: "Batal",
             reverseButtons: true,
-            customClass: { container: "z-[9999]" },
+            customClass: {container: "z-[9999]"},
         }).then(r => r.isConfirmed);
 
         if (!ok) return;
@@ -68,42 +76,47 @@ export default function DeviceShowPage() {
         const sub = deleting
             ? "Mohon tunggu sampai proses selesai"
             : "Mohon tunggu sampai proses selesai";
-        return <BlockingOverlay open message={msg} subMessage={sub} />;
+        return <BlockingOverlay open message={msg} subMessage={sub}/>;
     }
 
-    if (isLoading) return <LoadingState />;
-    if (!device || error) return <ErrorLoadingState />
+    if (isLoading) return <LoadingState/>;
+    if (!device || error) return <ErrorLoadingState/>
 
     return (
         <div className="p-6">
             {/* Header */}
             <div className="mb-6">
                 <Breadcrumb
+                    scrollOnMobile
                     items={[
-                        { label: "App", href: "/app/dashboard" },
-                        { label: "Devices", href: "/app/devices" },
-                        { label: device.name },
+                        {label: "App", href: "/app/dashboard"},
+                        {label: "Devices", href: "/app/devices"},
+                        {label: device.name},
                     ]}
                 />
 
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">\
+                    <div className="min-w-0">
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white truncate">
                             {device.name}
                         </h1>
                         <p className="text-gray-600 dark:text-gray-400 mt-1">
                             Detail informasi perangkat WhatsApp
                         </p>
                     </div>
-                    <div className="flex items-center space-x-3">
-                        <DeleteButton handleDelete={() => requestDelete(device.id)} />
 
-                        {(device.status != DeviceStatus.Connected) && (
+                    <div className="flex flex-wrap gap-2 sm:gap-3 justify-start sm:justify-end">
+                        <DeleteButton
+                            className="shrink-0"
+                            handleDelete={() => requestDelete(device.id)}
+                        />
+
+                        {device.status !== DeviceStatus.Connected && (
                             <Link
                                 to={`/app/devices/${device.id}/connect`}
-                                className="inline-flex items-center px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white font-medium rounded-lg transition-colors"
+                                className="inline-flex items-center px-3 py-2 sm:px-4 bg-pink-600 hover:bg-pink-700 text-white text-sm font-medium rounded-lg transition-colors shrink-0"
                             >
-                                <LinkIcon className="size-4 mr-1" />
+                                <LinkIcon className="size-4 mr-1"/>
                                 Connect
                             </Link>
                         )}
@@ -111,16 +124,16 @@ export default function DeviceShowPage() {
                         {device.status === DeviceStatus.Connected && (
                             <button
                                 type="button"
-                                className="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors"
+                                className="inline-flex items-center px-3 py-2 sm:px-4 bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium rounded-lg transition-colors shrink-0"
                                 onClick={() => requestDisconnection(device.id)}
                             >
-                                <Link2Off className="size-4 mr-1" />
+                                <Link2Off className="size-4 mr-1"/>
                                 Disconnect
                             </button>
                         )}
-                        
-                        <EditButton to={`/app/devices/${device.id}/edit`} />
-                        <BackButton to="/app/devices" />
+
+                        <EditButton className="shrink-0" to={`/app/devices/${device.id}/edit`}/>
+                        <BackButton className="shrink-0" to="/app/devices"/>
                     </div>
                 </div>
             </div>

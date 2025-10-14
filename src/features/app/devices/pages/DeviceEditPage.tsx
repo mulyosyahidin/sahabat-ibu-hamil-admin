@@ -57,20 +57,27 @@ export default function DeviceEditPage() {
         <div className="p-6">
             {/* Header */}
             <div className="mb-6">
-                <div className="flex items-center justify-between">
-                    <Breadcrumb
-                        items={[
-                            { label: "App", href: "/app/dashboard" },
-                            { label: "Devices", href: "/app/devices" },
-                            { label: device.name, href: `/app/devices/${device.id}` },
-                            { label: "Edit" },
-                        ]}
-                    />
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="min-w-0">
+                        <Breadcrumb
+                            scrollOnMobile
+                            className="block truncate"
+                            items={[
+                                { label: "App", href: "/app/dashboard" },
+                                { label: "Devices", href: "/app/devices" },
+                                { label: device.name, href: `/app/devices/${device.id}` },
+                                { label: "Edit" },
+                            ]}
+                        />
+                    </div>
 
-                    <BackButton to={`/app/devices/${device.id}`} />
+                    <BackButton
+                        to={`/app/devices/${device.id}`}
+                        className="shrink-0 self-start sm:self-auto"
+                    />
                 </div>
 
-                <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                <h1 className="mt-3 text-2xl font-semibold text-gray-900 dark:text-white">
                     Edit Data Device
                 </h1>
             </div>

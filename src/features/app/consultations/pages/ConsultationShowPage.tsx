@@ -51,29 +51,37 @@ export default function ConsultationShowPage() {
         <div className="container mx-auto px-4 py-8">
             {/* Header */}
             <div className="mb-6">
-                <div className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
+                {/* Breadcrumb: biar aman di HP, kasih min-w-0 + optional scroll horizontal */}
+                <div className="min-w-0 mb-2">
                     <Breadcrumb
+                        // scrollOnMobile  // aktifkan kalau sering panjang
+                        className="block truncate text-sm text-gray-500"
                         items={[
-                            {label: "App", href: "/app/dashboard"},
-                            {label: "Konsultasi", href: "/app/consultations"},
-                            {label: `#${consultation.id}`},
+                            { label: "App", href: "/app/dashboard" },
+                            { label: "Konsultasi", href: "/app/consultations" },
+                            { label: `#${consultation.id}` },
                         ]}
                     />
                 </div>
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+
+                {/* Header: stack di mobile, row mulai ≥sm */}
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    {/* Kiri: judul & deskripsi boleh menyusut */}
+                    <div className="min-w-0">
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 truncate">
                             Konsultasi #{consultation.id}
                         </h1>
-                        <p className="text-gray-600 mt-1">
+                        <p className="text-gray-600 dark:text-gray-400 mt-1">
                             Detail informasi konsultasi dari pengguna
                         </p>
                     </div>
-                    <div className="flex items-center space-x-3">
-                        {consultation.status !== 'ANSWERED' && (
+
+                    {/* Kanan: tombol bisa wrap di HP */}
+                    <div className="flex flex-wrap gap-2 sm:gap-3 justify-start sm:justify-end">
+                        {consultation.status !== "ANSWERED" && (
                             <Link
                                 to={`/app/consultations/${consultation.id}/answer`}
-                                className="inline-flex items-center px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white font-medium rounded-lg transition-colors"
+                                className="inline-flex items-center px-3 py-2 sm:px-4 bg-pink-600 hover:bg-pink-700 text-white text-sm font-medium rounded-lg transition-colors shrink-0"
                             >
                                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -81,7 +89,8 @@ export default function ConsultationShowPage() {
                                 Jawab Konsultasi
                             </Link>
                         )}
-                        <BackButton to="/app/consultations" />
+
+                        <BackButton to="/app/consultations" className="shrink-0" />
                     </div>
                 </div>
             </div>

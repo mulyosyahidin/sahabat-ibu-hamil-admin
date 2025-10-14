@@ -67,24 +67,30 @@ export default function ConsultationAnswerPage() {
         <div className="container mx-auto px-4 py-8">
             {/* Header */}
             <div className="mb-6">
-                <div className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
+                {/* Breadcrumb aman di HP */}
+                <div className="min-w-0 mb-2">
                     <Breadcrumb
+                        // scrollOnMobile  // aktifkan kalau path sering panjang
+                        className="block truncate text-sm text-gray-500"
                         items={[
-                            {label: "App", href: "/app/dashboard"},
-                            {label: "Konsultasi", href: "/app/consultations"},
-                            {label: `#${consultation.id}`, href: `/app/consultations/${consultation.id}`},
-                            {label: "Jawab"}
+                            { label: "App", href: "/app/dashboard" },
+                            { label: "Konsultasi", href: "/app/consultations" },
+                            { label: `#${consultation.id}`, href: `/app/consultations/${consultation.id}` },
+                            { label: "Jawab" },
                         ]}
                     />
                 </div>
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+
+                {/* Header: kolom di mobile, row mulai ≥sm */}
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="min-w-0">
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 truncate">
                             Jawab Konsultasi
                         </h1>
                     </div>
-                    <div className="flex items-center space-x-3">
-                        <BackButton to={`/app/consultations/${consultation.id}`}/>
+
+                    <div className="flex flex-wrap gap-2 sm:gap-3 justify-start sm:justify-end">
+                        <BackButton to={`/app/consultations/${consultation.id}`} className="shrink-0" />
                     </div>
                 </div>
             </div>
