@@ -299,6 +299,7 @@ layer(base);
 @utility menu-dropdown-badge-inactive {
     @apply bg-primary-50 group-hover:bg-primary-100 dark:bg-primary-500/15 dark:group-hover:bg-primary-500/20;
 }
+
 @utility no-scrollbar {
     /* Chrome, Safari and Opera */
     &::-webkit-scrollbar {

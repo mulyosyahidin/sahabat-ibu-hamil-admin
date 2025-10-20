@@ -95,7 +95,7 @@ export default function DeviceShowPage() {
                     ]}
                 />
 
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">\
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div className="min-w-0">
                         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white truncate">
                             {device.name}
