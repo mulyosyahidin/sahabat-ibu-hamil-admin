@@ -148,53 +148,53 @@ export default function ChatShowPage() {
   const chat = chatData.chat;
 
   return (
-    <div className="p-6 h-screen flex flex-col">
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between">
-          <Breadcrumb
-            items={[
-              { label: "App", href: "/app/dashboard" },
-              { label: "Chats", href: "/app/chats" },
-              { label: chat.name },
-            ]}
-          />
+  <div className="p-6 min-h-[100dvh] md:h-screen flex flex-col">
+    {/* Header */}
+    <div className="mb-6">
+      <div className="flex items-center justify-between">
+        <Breadcrumb
+          items={[
+            { label: "App", href: "/app/dashboard" },
+            { label: "Chats", href: "/app/chats" },
+            { label: chat.name },
+          ]}
+        />
+        <BackButton to="/app/chats" />
+      </div>
+      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">User Chat</h1>
+    </div>
 
-          <BackButton to="/app/chats" />
-        </div>
-
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-          User Chat
-        </h1>
+    {/* Body */}
+    <div className="flex-1 flex flex-col md:flex-row md:space-x-6 gap-6 md:gap-0 min-h-0">
+      {/* Chat Content */}
+      <div className="w-full md:w-3/4 bg-white dark:bg-gray-800 rounded-lg shadow flex flex-col min-h-0">
+        <MessagesBox
+          messages={messages}
+          messagesCount={chatData.stats.message_count}
+          messagesLoading={isFetchingNextPage || isDelayingOlder}
+          hasMoreMessages={hasNextPage}
+          messagesError={messagesError as Error | null}
+          loadMessages={fetchNextPage}
+          messagesContainerRef={messagesContainerRef}
+          handleScroll={handleScroll}
+          messageService={messageService}
+        />
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex space-x-6 min-h-0">
-        <div className="w-3/4 bg-white dark:bg-gray-800 rounded-lg shadow flex flex-col">
-          <MessagesBox
-            messages={messages}
-            messagesCount={chatData.stats.message_count}
-            messagesLoading={isFetchingNextPage || isDelayingOlder}
-            hasMoreMessages={hasNextPage}
-            messagesError={messagesError as Error | null}
-            loadMessages={fetchNextPage}
-            messagesContainerRef={messagesContainerRef}
-            handleScroll={handleScroll}
-            messageService={messageService}
-          />
+      {/* Chat Detail – tampil juga di HP, responsive */}
+      <div className="w-full md:w-1/4 bg-white dark:bg-gray-800 rounded-lg shadow flex flex-col min-h-0">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
+          <h2 className="text-lg font-medium text-gray-900 dark:text-white">Detail Chat</h2>
         </div>
 
-        <div className="w-1/4 bg-white dark:bg-gray-800 rounded-lg shadow">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-lg font-medium text-gray-900 dark:text-white">
-              Detail Chat
-            </h2>
-          </div>
-
+        {/* Biar panel detail bisa discroll kalau kontennya panjang */}
+        <div className="flex-1 min-h-0 overflow-y-auto">
           <ChatDetailAccordion chatData={chatData} />
         </div>
       </div>
     </div>
-  );
+  </div>
+);
+
 }
 
